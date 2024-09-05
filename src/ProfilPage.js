@@ -118,7 +118,15 @@ function ProfilPage() {
   }
 
   return (
-    <div className="profil-page">
+    <div className="profil-page profilpage">
+      <div className="profil-settings">
+        <FiSettings
+          size={24}
+          onClick={() => setIsEditing(prev => !prev)}
+          className="settings-icon"
+        />
+      </div>
+      
       <header className="profil-header">
         <div className="profil-header-info">
           <img 
@@ -132,15 +140,7 @@ function ProfilPage() {
           </div>
         </div>
         <div className="profil-header-stats">
-          <FollowButton utilisateurId={utilisateur_id} />
-          
-          <div className="profil-settings">
-            <FiSettings
-              size={24}
-              onClick={() => setIsEditing(prev => !prev)}
-              className="settings-icon"
-            />
-          </div>
+        <FollowButton utilisateurId={utilisateur_id} />
         </div>
       </header>
 
@@ -178,17 +178,18 @@ function ProfilPage() {
         </div>
       )}
 
-      <div className="profil-bd-grid">
-        {Array.isArray(bd) && bd.length > 0 ? (
-          bd.map((bdItem) => (
-            <div key={bdItem.id} className="profil-bd-item">
-              <BD bd={bdItem} utilisateur_id={utilisateur_id} />
-            </div>
-          ))
-        ) : (
-          <p className="profil-bd-no-items">Aucune BD publiée pour l'instant</p>
-        )}
+<div className="profil-bd-grid">
+  {Array.isArray(bd) && bd.length > 0 ? (
+    bd.map((bdItem) => (
+      <div key={bdItem.id} className="profil-bd-item">
+        <h4>{bdItem.title}</h4>
+        <BD bd={bdItem} utilisateur_id={utilisateur_id} />
       </div>
+    ))
+  ) : (
+    <p className="profil-bd-no-items">Aucune BD publiée pour l'instant</p>
+  )}
+</div>
       <BottomNavigation />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './BDPage.css';
 import ImageColorExtractor from './ImageColorExtractor';
@@ -6,9 +6,9 @@ import ImageColorExtractor from './ImageColorExtractor';
 function BDPage({ utilisateur_id }) {
     const [bd, setBd] = useState(null);
     const [backgroundColors, setBackgroundColors] = useState([]);
-    const [showArrow, setShowArrow] = useState(true);
     const { id } = useParams();
     const navigate = useNavigate();
+    const pageRefs = useRef([]); // Ref pour suivre chaque page
 
     useEffect(() => {
         const fetchBd = async () => {
@@ -35,19 +35,36 @@ function BDPage({ utilisateur_id }) {
         });
     };
 
+    // Fonction pour s'assurer que chaque page se scroll automatiquement en entier
     useEffect(() => {
-        let lastScrollTop = 0;
-        const handleScroll = () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            setShowArrow(scrollTop <= lastScrollTop);
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        if (!bd || !bd.pages) return;
+
+        const observerOptions = {
+            root: null, // Fenêtre de vue
+            rootMargin: '0px',
+            threshold: 0.5 // Déclenchement à 50% de visibilité
         };
 
-        window.addEventListener('scroll', handleScroll);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }, observerOptions);
+
+        pageRefs.current.forEach(page => {
+            if (page) observer.observe(page);
+        });
+
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            if (pageRefs.current) {
+                pageRefs.current.forEach(page => {
+                    if (page) observer.unobserve(page);
+                });
+            }
         };
-    }, []);
+    }, [bd]);
 
     const handleBackClick = () => {
         navigate(-1);
@@ -59,11 +76,9 @@ function BDPage({ utilisateur_id }) {
 
     return (
         <div className="bd-page-container">
-            {showArrow && (
-                <div className="back-arrow" onClick={handleBackClick}>
-                    &#8592;
-                </div>
-            )}
+            <div className="back-arrow" onClick={handleBackClick}>
+                &#8592;
+            </div>
             <div className="bd-intro">
                 <header className="bd-header">
                     <h1>{bd.title}</h1>
@@ -75,6 +90,7 @@ function BDPage({ utilisateur_id }) {
                     <React.Fragment key={index}>
                         <div
                             className="bd-page"
+                            ref={el => (pageRefs.current[index] = el)} // Attacher la ref pour chaque page
                             style={{ backgroundColor: backgroundColors[index] || 'white' }}
                         >
                             <ImageColorExtractor

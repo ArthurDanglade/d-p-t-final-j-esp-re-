@@ -1,6 +1,8 @@
+// BD.js
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './BD.css'; // Importation du CSS
+import CommentModal from './CommentModal'; // Importation correcte du composant CommentModal
 
 function BD({ bd, utilisateur_id, showDetails = true }) {
   const [liked, setLiked] = useState(false);
@@ -10,6 +12,7 @@ function BD({ bd, utilisateur_id, showDetails = true }) {
   const [newComment, setNewComment] = useState('');
   const [rating, setRating] = useState(1);
   const [showComments, setShowComments] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // État pour gérer l'ouverture de la modale
 
   const location = useLocation();
 
@@ -80,11 +83,13 @@ function BD({ bd, utilisateur_id, showDetails = true }) {
 
   const fetchBDLikes = async () => {
     try {
+      console.log(`Fetching likes for BD ID: ${bd.id}`);
       const response = await fetch(`http://localhost:3001/api/communaute/likes/${bd.id}`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP! statut: ${response.status}`);
       }
       const data = await response.json();
+      console.log(`Fetched likes for BD ID ${bd.id}:`, data);
       setLikes(data.total_likes);
     } catch (error) {
       console.error('Erreur lors de la récupération des likes:', error);
@@ -131,6 +136,14 @@ function BD({ bd, utilisateur_id, showDetails = true }) {
     setShowComments(!showComments);
   };
 
+  const openCommentModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeCommentModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className={`bd-item ${showDetails ? 'show-details' : 'show-cover'}`}>
       {/* Affichage seulement de la couverture si showDetails est false */}
@@ -144,33 +157,21 @@ function BD({ bd, utilisateur_id, showDetails = true }) {
             ❤
           </button>
           <span>{likes}</span>
-          <button onClick={toggleComments} style={{ marginLeft: '10px' }}>
+          <button onClick={openCommentModal} style={{ marginLeft: '10px' }}>
             💬
           </button>
 
-          {showComments && (
-            <div className="comment-form">
-              <h3>Commentaires</h3>
-              {comments.map((comment, index) => (
-                <div key={index} className="comment">
-                  <p><strong>{comment.pseudo}</strong> - {new Date(comment.created_at).toLocaleDateString()}</p>
-                  <p>Rating: {comment.rating} étoiles</p>
-                  <p>{comment.comment}</p>
-                </div>
-              ))}
-              <input 
-                type="text" 
-                value={newComment} 
-                onChange={(e) => setNewComment(e.target.value)} 
-                placeholder="Ajouter un commentaire" 
-              />
-              <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
-                {[1, 2, 3, 4, 5].map(star => (
-                  <option key={star} value={star}>{star} étoile{star > 1 ? 's' : ''}</option>
-                ))}
-              </select>
-              <button onClick={handleAddComment}>Commenter</button>
-            </div>
+          {/* Affichage de la modale des commentaires */}
+          {isModalOpen && (
+            <CommentModal
+              comments={comments}
+              newComment={newComment}
+              rating={rating}
+              setNewComment={setNewComment}
+              setRating={setRating}
+              handleAddComment={handleAddComment}
+              closeModal={closeCommentModal}
+            />
           )}
         </>
       )}

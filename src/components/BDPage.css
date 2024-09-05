@@ -20,6 +20,9 @@
     flex-direction: column;
     padding: 0;
     margin: 0;
+    scroll-snap-align: start;
+    margin-bottom: 20px; /* Un espacement entre les pages */
+
 }
 
 .bd-page {

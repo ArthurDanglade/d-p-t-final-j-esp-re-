@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import BD from './components/BD';
 import BottomNavigation from './components/BottomNavigation';
 import FollowButton from './components/FollowButton';
 import './components/HomePage.css';
 import { FiFilter } from 'react-icons/fi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faStarHalfAlt, faStar as faStarEmpty } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
   const [bds, setBds] = useState([]);
@@ -117,8 +119,26 @@ const HomePage = () => {
     );
   };
 
+  const renderStars = (averageRating) => {
+    const fullStars = Math.floor(averageRating);
+    const halfStar = averageRating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <>
+        {[...Array(fullStars)].map((_, i) => (
+          <FontAwesomeIcon key={`full-${i}`} icon={faStar} style={{ color: '#FFD700' }} />
+        ))}
+        {halfStar && <FontAwesomeIcon icon={faStarHalfAlt} style={{ color: '#FFD700' }} />}
+        {[...Array(emptyStars)].map((_, i) => (
+          <FontAwesomeIcon key={`empty-${i}`} icon={faStarEmpty} style={{ color: '#C0C0C0' }} />
+        ))}
+      </>
+    );
+  };
+
   return (
-    <div className="homepage-container">
+    <div className="homepage-container homepage">
       <div className="logo-container">
         <img src="/logo.svg" alt="Bubble Logo" className="logo" />
       </div>
@@ -153,10 +173,13 @@ const HomePage = () => {
             <React.Fragment key={bdItem.id}>
               <div className="bd-item">
                 <h2>
-                  {bdItem.title} -<br />
-                  <span className="average-rating">{bdItem.averageRating.toFixed(1)} étoiles</span>
+                  {bdItem.title} <br />
                 </h2>
-  
+                <div>
+                  <span className="average-rating">
+                    {renderStars(bdItem.averageRating)} ({bdItem.averageRating.toFixed(1)} étoiles)
+                  </span>
+                </div>
                 <p>
                   Publié par :{' '}
                   <Link to={`/public-profile/${bdItem.utilisateur.pseudo}`} className="pseudo-link">
@@ -168,10 +191,10 @@ const HomePage = () => {
                     isFollowing={utilisateursSuivis.includes(bdItem.utilisateur_id)}
                     onFollowChange={(following, followersCount) => {
                       setBds(prevBds =>
-                        prevBds.map(bdItem =>
-                          bdItem.utilisateur_id === bdItem.utilisateur_id
-                            ? { ...bdItem, followersCount }
-                            : bdItem
+                        prevBds.map(bd =>
+                          bd.utilisateur_id === bdItem.utilisateur_id
+                            ? { ...bd, followersCount }
+                            : bd
                         )
                       );
                       setUtilisateursSuivis(prevSuivis =>

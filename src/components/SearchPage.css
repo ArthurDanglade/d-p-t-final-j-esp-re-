@@ -1,75 +1,72 @@
-.search-page {
-    padding: 20px;
-  }
-  
-  .search-page-form {
+.search-page-bd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colonnes de largeur égale */
+  gap: 8px; /* Réduit l'espace entre les éléments */
+  padding: 8px; /* Réduit le padding autour de la grille */
+}
 
-    margin-bottom: 20px;
-  }
-  
-  .search-page-input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-  }
-  
-  .search-page-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .search-page-results-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .search-page-results-item {
-    margin-bottom: 10px;
-  }
-  
-  .search-page-random-bd-container {
-    margin-top: 20px;
-  }
-  
-  .search-page-bd-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-  }
-  
-  .search-page-bd-item {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    text-align: center;
-    padding: 8px;
-  }
-  
-  .search-page-bd-item:hover {
-    transform: translateY(-5px);
-  }
-  
-  .search-page-bd-cover {
-    width: 100%;
-    height: auto;
-  }
-  
-  .search-page-bd-title {
-    margin-top: 8px;
-    font-size: 1em;
-    font-weight: bold;
-  }
-  
-  @media (max-width: 600px) {
-    .search-page-bd-grid {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-  }
-  
+.search-page-bd-item {
+  border: 1px solid #ddd;
+  border-radius: 6px; /* Réduit le rayon de bordure */
+  padding: 8px; /* Réduit le padding interne */
+  background-color: transparent;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* Assurez-vous que chaque élément est bien dans la grille */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Aligne les éléments pour remplir l'espace */
+}
+
+.search-page-bd-title {
+  font-size: 1em; /* Réduit la taille de la police du titre */
+  margin-bottom: 4px; /* Réduit l'espace sous le titre */
+}
+
+.search-page-bd-rating {
+  font-size: 0.9em; /* Réduit la taille de la police de l'évaluation */
+  margin-bottom: 4px; /* Réduit l'espace sous l'évaluation */
+}
+
+.search-page-bd-author {
+  font-size: 0.9em; /* Réduit la taille de la police de l'auteur */
+  margin-bottom: 4px; /* Réduit l'espace sous l'auteur */
+}
+
+.search-page-bd-themes {
+  font-size: 0.8em; /* Réduit la taille de la police des thèmes */
+  margin-bottom: 4px; /* Réduit l'espace sous les thèmes */
+}
+
+.search-page-bd-theme {
+  display: inline-block;
+  background-color: black;
+  padding: 2px 6px; /* Réduit le padding des thèmes */
+  border-radius: 4px;
+  margin-right: 4px; /* Réduit l'espace entre les thèmes */
+}
+
+
+.search-page-bd-item img {
+  width: 100%; /* S'adapte à la largeur du conteneur */
+  height: 200px; /* Hauteur fixe */
+  object-fit: cover; /* Recadre l'image pour remplir l'espace sans déformation */
+  border-radius: 6px; /* Réduit les coins de l'image */
+}
+
+.search-page-bd-description {
+  min-height: 60px; /* Hauteur minimale */
+  overflow: hidden; /* Cache le texte qui dépasse */
+  text-overflow: ellipsis; /* Ajoute des points de suspension pour le texte long */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limite le nombre de lignes affichées */
+  -webkit-box-orient: vertical;
+}
+
+.search-page-bd-item h2,
+.search-page-bd-rating,
+.search-page-bd-author,
+.search-page-bd-themes {
+  margin: 0;
+  padding: 0;
+  /* Ajustez les marges et le padding pour un alignement cohérent */
+}

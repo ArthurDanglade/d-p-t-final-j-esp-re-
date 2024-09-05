@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2/promise');
-const connection = require('../../src/db'); // Assure-toi que ce fichier utilise mysql2/promise
+const connection = require('../../src/db'); // Utilisez 'connection' ici pour être cohérent
 
 // Route pour ajouter ou retirer un like
 router.post('/:utilisateurs_id/like/:bd_id', async (req, res) => {
@@ -62,18 +62,25 @@ router.get('/utilisateur/:utilisateur_id/likes/:bd_id', async (req, res) => {
   }
 });
 
-// Endpoint pour obtenir le nombre total de likes pour une BD
-router.get('/likes/:bd_id', async (req, res) => {
-  const { bd_id } = req.params;
+// Route pour obtenir le nombre total de likes pour une BD
+router.get('/likes/:bdId', async (req, res) => {
+  const { bdId } = req.params;
 
-  const query = 'SELECT COUNT(*) as total_likes FROM utilisateursLikes WHERE bd_id = ?';
   try {
-    const [result] = await connection.query(query, [bd_id]);
-    res.json(result[0]);
-  } catch (err) {
-    console.error('Erreur lors de la récupération des likes:', err);
-    res.status(500).json({ status: 'error', message: 'Erreur serveur' });
+    console.log(`Fetching likes for bdId: ${bdId}`);
+    const [rows] = await connection.query(`
+      SELECT COUNT(*) AS total_likes
+      FROM utilisateurslikes
+      WHERE bd_id = ?
+    `, [bdId]);
+
+    console.log(`Likes count for bdId ${bdId}: ${rows[0].total_likes}`);
+    res.json({ total_likes: rows[0].total_likes });
+  } catch (error) {
+    console.error('Error fetching BD likes:', error);
+    res.status(500).send('Server error');
   }
 });
+
 
 module.exports = router;

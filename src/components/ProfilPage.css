@@ -16,6 +16,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    gap: 30px;
   }
   
   .profil-header-photo {
@@ -33,14 +34,14 @@
   }
   
   .profil-header-pseudo {
-    font-size: 20px;
+    font-size: 40px;
     font-weight: bold;
     margin: 0;
   }
   
   .profil-header-description {
     font-size: 16px;
-    color: #666;
+    color: white;
     margin: 0;
   }
   
@@ -95,30 +96,19 @@
     font-size: 16px;
   }
   
-  @media only screen and (max-width: 600px) {
-    .profil-header-photo {
-      width: 64px;
-      height: 64px;
-    }
-  
-    .profil-header-pseudo {
-      font-size: 18px;
-    }
-  
-    .profil-header-description {
-      font-size: 14px;
-    }
-  
-    .followers-count {
-      font-size: 14px;
-    }
-  
-    .profil-bd-item {
-      padding: 8px;
-    }
-  
-    .profil-bd-grid {
-      gap: 12px;
-    }
+
+  .profil-settings {
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    color: white;
+    z-index: 100; 
   }
   
+/* ProfilPage.css */
+.profilpage .bd-cover {
+  width: 100%;
+  height: 20vh;
+  object-fit: cover;
+  border-radius: 8px;
+}

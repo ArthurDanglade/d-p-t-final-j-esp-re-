@@ -1,0 +1,100 @@
+.profil-page {
+    padding: 20px;
+  }
+  
+  .profil-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profil-header-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .profil-header-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .profil-header-details {
+    max-width: 600px;
+  }
+  
+  .profil-header-pseudo {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .profil-header-description {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .profil-header-stats {
+    margin-top: 10px;
+  }
+  
+  .profil-header-stats p {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .profil-header-stats button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .profil-separator {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+  }
+  
+  .profil-bd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Deux colonnes de largeur égale */
+    gap: 16px; /* Espacement entre les éléments */
+    padding: 16px; /* Espacement intérieur */
+  }
+  
+  .profil-bd-item {
+    border: 1px solid #ddd; /* Bordure légère autour des éléments */
+    border-radius: 8px; /* Coins arrondis */
+    overflow: hidden; /* Cache tout dépassement */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère pour les éléments */
+    background-color: transparent; /* Fond blanc pour les éléments */
+  }
+  
+  .profil-bd-item img {
+    width: 100%; /* L'image occupe toute la largeur de l'élément */
+    height: auto; /* Conserve les proportions de l'image */
+  }
+
+  .bd-title {
+    font-size: 18px;
+    margin: 0 0 10px;
+  }
+  
+  .profil-bd-no-items {
+    text-align: center;
+    color: #888;
+  }
+  
+
+  .profil-bd-item h4 {
+    margin: 8px; /* Marge autour du titre */
+    font-size: 16px; /* Taille de police du titre */
+    text-align: center; /* Centre le texte */
+  }

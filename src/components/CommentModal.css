@@ -1,0 +1,68 @@
+.comment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Assurez-vous que le modal est au-dessus des autres éléments */
+  }
+  
+  .comment-modal {
+    background: black;
+    width: 90%;
+    max-width: 600px; /* Vous pouvez ajuster cette largeur selon vos besoins */
+    max-height: 80vh; /* Limiter la hauteur du modal */
+    overflow-y: auto; /* Permet le défilement si nécessaire */
+    border-radius: 30px;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .comment-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .comment-list {
+    margin-bottom: 20px;
+  }
+
+  .comment-list p {
+    color: white; /* Couleur grise pour le texte du message */
+    font-style: italic; /* Style italique pour le message */
+    text-align: center; /* Centrer le texte */
+    margin: 20px 0; /* Espacement autour du message */
+  }
+
+  .comment-form {
+    position: sticky; /* Pour garder le formulaire visible lors du défilement */
+    bottom: -20px;
+    background: white;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .comment-form input, .comment-form select, .comment-form button {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+
+  .rating-stars {
+    display: flex;
+    margin: 10px 0;
+  }
+  
+  .rating-stars .fa-star {
+    font-size: 24px;
+    margin-right: 5px;
+  }

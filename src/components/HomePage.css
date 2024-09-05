@@ -99,7 +99,7 @@ div.bd-item:nth-child(1) > div:nth-child(3) > button:nth-child(7) {margin-left: 
 .pseudo-link {
   font-weight: bold;
   color: burlywood; 
-  text-decoration: none;
+  text-decoration: underline;
 font-size: larger;
 }
 
@@ -169,3 +169,13 @@ font-size: larger;
 .bd-separator {
   margin: 20px 0;
 }
+
+
+/* HomePage.css */
+.homepage .bd-cover {
+  width: 100%;
+  height: 56vh; /* Ajuste la hauteur en fonction de la hauteur de la fenêtre du navigateur */
+  object-fit: cover;
+  border-radius: 8px;
+}
+

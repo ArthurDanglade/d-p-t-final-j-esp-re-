@@ -53,6 +53,9 @@ app.use('/api/bd', bdRoutes);
 const communauteRoutes = require('./routes/RouteCommunaute');
 app.use('/api/communaute', communauteRoutes);
 
+const Totallike = require('./routes/Routetotallike');
+app.use('/api', Totallike);
+
 const followRoutes = require('./routes/Routefollow');
 app.use('/api', followRoutes);
 

@@ -5,22 +5,24 @@
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
+    overflow: hidden; /* Assure que les éléments enfants ne débordent pas */
 }
 
-/* Image de BD */
-.bd-image {
-    width: 100%;
-    height: auto;
-    max-height: 400px; /* Hauteur maximale pour les images */
+.bd-cover {
     object-fit: cover;
     border-radius: 8px;
-}
+  }
 
 /* Description de BD */
 .bd-description {
     font-size: 14px;
     margin-top: 10px;
     font-style: italic;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limite à 2 lignes */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Ajoute des points de suspension */
 }
 
 /* Commentaires */
@@ -77,3 +79,6 @@
 .comment-form button:hover {
     background-color: #218838;
 }
+
+
+

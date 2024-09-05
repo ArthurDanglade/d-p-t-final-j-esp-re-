@@ -10,6 +10,7 @@ const PublicProfilePage = () => {
   const [utilisateurId, setUtilisateurId] = useState(null);
   const [followersCount, setFollowersCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [totalLikes, setTotalLikes] = useState(0);
   const { pseudo } = useParams();
 
   useEffect(() => {
@@ -45,6 +46,15 @@ const PublicProfilePage = () => {
           setFollowersCount(followersData.followersCount || 0);
         };
         fetchFollowersCount();
+
+        // Fetch total likes
+const fetchTotalLikes = async () => {
+  const likesResponse = await fetch(`http://localhost:3001/api/total-likes/${data.id}`);
+  if (!likesResponse.ok) throw new Error(likesResponse.statusText);
+  const likesData = await likesResponse.json();
+  setTotalLikes(likesData.totalLikes || 0);
+};
+        fetchTotalLikes();
 
         // Check if the user is following this profile
         const checkIfFollowing = async () => {
@@ -118,29 +128,45 @@ const PublicProfilePage = () => {
   }
 
   return (
-    <div>
-      <h1>{user.pseudo}</h1>
-      <p>{user.description}</p>
-      <p>{user.email}</p>
-      {user.photo && <img src={`http://localhost:3001/${user.photo}`} alt={`${user.pseudo}'s profile`} />}
-      <p>Followers: {followersCount}</p>
-      <button onClick={handleFollowButtonClick}>
-        {isFollowing ? 'Unfollow' : 'Follow'}
-      </button>
-      {Array.isArray(bds) && bds.length > 0 ? (
-        bds.map((bdItem, index) => 
-          bdItem.pages && bdItem.pages.length > 0 ? (
-            <div key={bdItem.id}>
-              <h2>{bdItem.title}</h2>
+    <div className="profil-page profilpage">
+      <header className="profil-header">
+        <div className="profil-header-info">
+          <img 
+            src={user.photo ? `http://localhost:3001/${user.photo}` : '/images/defaultprofil.png'} 
+            alt={`${user.pseudo}'s profile`} 
+            className="profil-header-photo" 
+          />
+          <div className="profil-header-details">
+            <h2 className="profil-header-pseudo">{user.pseudo}</h2>
+            <p className="profil-header-description">{user.description}</p>
+          </div>
+        </div>
+        <div className="profil-header-stats">
+          <p className="profil-header-followers">
+            Followers: {followersCount}
+          </p>
+          <p className="profil-header-likes">
+            Total Likes: {totalLikes}
+          </p>
+          <button onClick={handleFollowButtonClick}>
+            {isFollowing ? 'Unfollow' : 'Follow'}
+          </button>
+        </div>
+      </header>
+
+      <div className="profil-bd-grid">
+        {Array.isArray(bds) && bds.length > 0 ? (
+          bds.map((bdItem) => (
+            <div key={bdItem.id} className="profil-bd-item">
+              <h4>{bdItem.title}</h4>
               <BD bd={bdItem} utilisateur_id={utilisateurId} />
             </div>
-          ) : (
-            <p key={index}>Cette BD n'a pas de pages</p>
-          )
-        )
-      ) : (
-        <p>Aucune BD publiée pour l'instant.</p>
-      )}
+          ))
+        ) : (
+          <p className="profil-bd-no-items">Aucune BD publiée pour l'instant</p>
+        )}
+      </div>
+
       <BottomNavigation />
     </div>
   );
