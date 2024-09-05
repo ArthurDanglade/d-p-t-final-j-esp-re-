@@ -1,0 +1,79 @@
+/* BD.css */
+
+/* Conteneur principal de la BD */
+.bd-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Image de BD */
+.bd-image {
+    width: 100%;
+    height: auto;
+    max-height: 400px; /* Hauteur maximale pour les images */
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Description de BD */
+.bd-description {
+    font-size: 14px;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Commentaires */
+.comment {
+    border-top: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.comment p {
+    margin: 5px 0;
+}
+
+/* Boutons */
+.bd-item button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.bd-item button:hover {
+    background-color: #0056b3;
+}
+
+/* Formulaire de commentaire */
+.comment-form {
+    margin-top: 10px;
+}
+
+.comment-form input,
+.comment-form select,
+.comment-form button {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.comment-form input,
+.comment-form select {
+    width: calc(100% - 22px);
+    border: 1px solid #ddd;
+}
+
+.comment-form button {
+    width: 100%;
+    background-color: #28a745;
+    color: #fff;
+}
+
+.comment-form button:hover {
+    background-color: #218838;
+}

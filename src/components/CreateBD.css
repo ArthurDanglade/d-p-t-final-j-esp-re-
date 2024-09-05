@@ -1,0 +1,119 @@
+/* CreateBD.css */
+
+/* Assurez-vous que le conteneur principal prend toute la largeur disponible */
+div {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Styliser le titre principal */
+h1 {
+  font-size: 24px;
+  margin: 16px;
+  text-align: center;
+}
+
+/* Champ de texte pour le titre et la description */
+input[type="text"],
+textarea {
+  width: 90%;
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 100px;
+  resize: none; /* Empêche le redimensionnement */
+}
+
+/* Style du menu de sélection de thème */
+select {
+  width: 90%;
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Liste des thèmes sélectionnés */
+div > div {
+
+  text-align: center;
+}
+
+button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Styliser les images importées pour qu'elles soient adaptatives */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+  border-radius: 5px;
+}
+
+/* Ajout de marges et de bordures pour les boutons des pages */
+button {
+  margin: 5px;
+  padding: 10px;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Styliser le bouton de publication */
+button[type="submit"] {
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  font-size: 18px;
+  margin: 20px auto;
+  display: block;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+/* Navigation en bas */
+.BottomNavigation {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#root > div:nth-child(1) > div:nth-child(n) > div:nth-child(n) {color: white;}
+

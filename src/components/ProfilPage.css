@@ -1,0 +1,124 @@
+/* Styles pour la page de profil */
+
+.profil-page {
+    padding: 16px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .profil-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profil-header-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .profil-header-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+  
+  .profil-header-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .profil-header-pseudo {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .profil-header-description {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .profil-header-stats {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .follow-button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .follow-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .follow-button.follow {
+    background-color: #007bff;
+  }
+  
+  .follow-button.unfollow {
+    background-color: #dc3545;
+  }
+  
+  .followers-count {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .profil-bd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .profil-bd-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .profil-bd-no-items {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .profil-header-photo {
+      width: 64px;
+      height: 64px;
+    }
+  
+    .profil-header-pseudo {
+      font-size: 18px;
+    }
+  
+    .profil-header-description {
+      font-size: 14px;
+    }
+  
+    .followers-count {
+      font-size: 14px;
+    }
+  
+    .profil-bd-item {
+      padding: 8px;
+    }
+  
+    .profil-bd-grid {
+      gap: 12px;
+    }
+  }
+  

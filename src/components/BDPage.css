@@ -1,0 +1,65 @@
+.bd-page-container {
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    position: relative;
+}
+
+.bd-intro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+}
+
+.bd-pages {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.bd-page {
+    flex: 0 0 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.bd-page-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin: 0;
+    padding: 0;
+    display: block;
+    background-color: transparent;
+}
+
+.bd-gradient {
+    height: 20vh; /* Ajustez la hauteur du dégradé comme nécessaire */
+    width: 100%;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.back-arrow {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    z-index: 1000;
+}
