@@ -10,6 +10,8 @@ import PublicProfilePage from './PublicProfilePage';
 import BDPage from './components/BDPage'; 
 import 'bootstrap/dist/css/bootstrap-grid.css'; 
 import './App.css';
+import PageOptions from './PageOptions'; // Nouvelle page pour les options de mise en page
+import DrawingCanvas from './components/DrawingCanvas';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,6 +41,8 @@ const App = () => {
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/SearchPage" element={<SearchPage />} />
         <Route path="/CreateBD" element={<CreateBD token={token} />} /> {/* passe token a createbd */}
+        <Route path="/page-options/:index" element={<PageOptions />} />
+        <Route path="/drawing-canvas/:template" element={<DrawingCanvas />} />
         <Route path="/ProfilPage" element={<ProfilPage utilisateur_id={utilisateur_id} />} />        <Route path="/public-profile/:pseudo" element={<PublicProfilePage />} />
         <Route path="/bd/:id" element={<BDPage utilisateur_id={utilisateur_id} />} />      
           </Routes>

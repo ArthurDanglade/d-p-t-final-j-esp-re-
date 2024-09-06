@@ -1,8 +1,44 @@
+@font-face {
+  font-family: 'Badaboom BB';
+  src: url('./fonts/BADABB__.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'The Amazing Spider Man';
+  src: url('./fonts/The Amazing Spider-Man.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Super Comic';
+  src: url('./fonts/Super Comic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Manga Temple';
+  src: url('./fonts/mangat.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Komigo 3D';
+  src: url('./fonts/Komigo3D-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Hey Comic';
+  src: url('./fonts/Hey Comic.otf') format('truetype');
+}
+@font-face {
+  font-family: 'FuturaHandwritten';
+  src: url('./fonts/FuturaHandwritten.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Fighting Spirit turbo';
+  src: url('./fonts/Fighting Spirit 2.otf') format('truetype');
+}
+
 .App {
   text-align: center;
 
 
 }
+
+
 
 .App-logo {
   height: 40vmin;
@@ -48,3 +84,122 @@ a, h1, h2, h3, h4, label, p, span {color: white;}
 img {
   pointer-events: none;
 }
+
+
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+.upper-canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+.lower-canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+/* Styles pour le menu hamburger */
+.menu {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  display: none;
+}
+
+.menu.open {
+  display: block;
+}
+
+.menu-toggle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000; /* Assurez-vous que le bouton est au-dessus du canvas */
+}
+
+/* Menu de texte */
+.text-menu {
+  display: none; /* Masquer par défaut */
+  position: absolute;
+  top: 50px; /* Ajuste la position en fonction de l'en-tête ou du contenu */
+  right: 10px; /* Positionner à droite */
+  background: black;
+  border: 1px solid #ddd;
+  z-index: 1000; /* Assure-toi qu'il est au-dessus des autres éléments */
+  padding: 10px;
+}
+
+.text-menu.open {
+  display: block; /* Afficher lorsque le menu est ouvert */
+}
+
+/* Bouton pour ouvrir le menu de texte */
+.text-menu-toggle {
+  position: absolute;
+  top: 10px; /* Ajuste la position en fonction de l'en-tête */
+  right: 10px; /* Positionner à droite */
+  cursor: pointer;
+  z-index: 1001; /* Assure-toi qu'il est au-dessus du menu */
+  background: #333;
+}
+
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.controls label, .controls button {
+  margin: 5px 0;
+}
+
+.controls input[type="color"], .controls input[type="number"] {
+  width: 100%;
+}
+
+/* Styles pour les appareils mobiles */
+@media (max-width: 600px) {
+  .menu {
+    width: 90%;
+  }
+
+  .controls {
+    align-items: center;
+  }
+}
+
+/* Styles pour les tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .menu {
+    width: 70%;
+  }
+
+  .controls {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .controls label, .controls button {
+    margin: 5px;
+  }
+
+  .controls input[type="color"], .controls input[type="number"] {
+    width: auto;
+  }
+}
+
