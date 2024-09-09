@@ -1,26 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import BottomNavigation from './components/BottomNavigation';
-import DrawingCanvas from './components/DrawingCanvas';
+import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import './components/CreateBD.css';
-import { useNavigate } from 'react-router-dom';
+import { AppContext } from './components/AppContext'; // Import AppContext
 
 const CreateBD = () => {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  const [pages, setPages] = useState([]);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedThemes, setSelectedThemes] = useState([]);
+  const { pages, setPages, title, setTitle, description, setDescription, selectedThemes, setSelectedThemes } = useContext(AppContext); // Use context
   const [availableThemes] = useState([
     'Humour', 'Aventure', 'Science-fiction', 'Romance', 'Action',
     'Amitié', 'Famille', 'Enquête', 'Magie', 'Super-héros',
     'Absurde', 'Guerre', 'Espace', 'Sport', 'Mythologies',
     'Bd courte', 'Bd longue', 'Amour'
   ]);
-  const [isDrawing, setIsDrawing] = useState(false); // Nouvel état pour gérer l'affichage du canvas
-  const [drawingIndex, setDrawingIndex] = useState(null); // L'index de la page à dessiner
-
   // Fonction pour ajouter une page
   const handleAddPage = () => {
     setPages([...pages, { content: null, url: '' }]);
@@ -43,15 +37,7 @@ const CreateBD = () => {
 
   // Fonction pour dessiner une page
   const handleDrawPage = (index) => {
-    setDrawingIndex(index); // Définit l'index de la page à dessiner
-    navigate(`/page-options/${index}`); // Redirige vers la page des options de modèle
-  };
-
-  const saveDrawing = (dataUrl) => {
-    const newPages = [...pages];
-    newPages[drawingIndex] = { content: dataUrl, url: dataUrl };
-    setPages(newPages);
-    setIsDrawing(false); // Désactive le mode dessin après la sauvegarde
+    navigate(`/draw/${index}`); // Navigate to the drawing page with the page index
   };
 
   // Fonction pour supprimer une page
@@ -66,12 +52,12 @@ const CreateBD = () => {
       console.error('Token is undefined');
       return;
     }
-  
+
     const decodedToken = jwtDecode(token);
     const utilisateur_id = decodedToken.sub;
-  
+
     const formData = new FormData();
-    
+
     for (let index = 0; index < pages.length; index++) {
       const page = pages[index];
       if (page.content instanceof File) {
@@ -82,12 +68,12 @@ const CreateBD = () => {
         formData.append('pages', blob, `page-${index}.png`);
       }
     }
-  
+
     formData.append('utilisateur_id', utilisateur_id);
     formData.append('title', title);
     formData.append('description', description);
     formData.append('characteristics', JSON.stringify(selectedThemes)); // Envoi des thèmes comme JSON
-  
+
     const response = await fetch('http://localhost:3001/api/publish', {
       method: 'POST',
       body: formData,
@@ -95,7 +81,7 @@ const CreateBD = () => {
         'Authorization': token
       },
     });
-  
+
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
       try {
@@ -172,11 +158,7 @@ const CreateBD = () => {
         </div>
       ))}
       <button onClick={handlePublish}>Publier la BD</button>
-      
-      {isDrawing && (
-        <DrawingCanvas onSave={saveDrawing} />
-      )}
-      
+
       <BottomNavigation />
     </div>
   );

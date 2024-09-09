@@ -43,288 +43,313 @@ const fontOptions = [
 ];
 
 const DrawingCanvas = ({ onSave }) => {
-    const canvasRef = useRef(null);
-    const canvas = useRef(null);
-    const [brushColor, setBrushColor] = useState('black');
-    const [brushSize, setBrushSize] = useState(5);
-    const [isErasing, setIsErasing] = useState(false);
-    const [isTextMode, setIsTextMode] = useState(false);
-    const [selectedLayout, setSelectedLayout] = useState(null);
-    const [borderColor, setBorderColor] = useState('black');
-    const [borderWidth, setBorderWidth] = useState(5);
-    const [selectedFont, setSelectedFont] = useState('Arial');
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [textMenuOpen, setTextMenuOpen] = useState(false);
-  
-    useEffect(() => {
-        if (!canvasRef.current) return;
-      
-        // Dispose of the existing canvas if it exists
-        if (canvas.current) {
-          canvas.current.dispose();
+  const canvasRef = useRef(null);
+  const canvas = useRef(null);
+  const [brushColor, setBrushColor] = useState('black');
+  const [brushSize, setBrushSize] = useState(5);
+  const [isErasing, setIsErasing] = useState(false);
+  const [isTextMode, setIsTextMode] = useState(false);
+  const [selectedLayout, setSelectedLayout] = useState(null);
+  const [borderColor, setBorderColor] = useState('black');
+  const [borderWidth, setBorderWidth] = useState(5);
+  const [selectedFont, setSelectedFont] = useState('Arial');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [textMenuOpen, setTextMenuOpen] = useState(false);
+  const [textColor, setTextColor] = useState('black'); // Ajout de l'état pour la couleur du texte
+  const [customBorders, setCustomBorders] = useState([]); // Ajout de l'état pour les bordures personnalisées
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    // Dispose of the existing canvas if it exists
+    if (canvas.current) {
+      canvas.current.dispose();
+    }
+
+    // Initialize the new canvas
+    canvas.current = new fabric.Canvas(canvasRef.current);
+    initializeBrush();
+
+    const resizeCanvas = () => {
+      if (canvas.current) {
+        canvas.current.setWidth(window.innerWidth);
+        canvas.current.setHeight(window.innerHeight);
+        if (selectedLayout) {
+          drawLayout(selectedLayout);
         }
-      
-        // Initialize the new canvas
-        canvas.current = new fabric.Canvas(canvasRef.current);
-        initializeBrush();
-      
-        const resizeCanvas = () => {
-          if (canvas.current) {
-            canvas.current.setWidth(window.innerWidth);
-            canvas.current.setHeight(window.innerHeight);
-            if (selectedLayout) {
-              drawLayout(selectedLayout);
-            }
-            canvas.current.renderAll();
-          }
-        };
-      
-        // Initial resize
-        resizeCanvas();
-      
-        // Add resize event listener
-        window.addEventListener('resize', resizeCanvas);
-      
-        // Add canvas click event listener
-        canvas.current.on('mouse:down', handleCanvasClick);
-      
-        return () => {
-          // Cleanup resize event listener
-          window.removeEventListener('resize', resizeCanvas);
-      
-          // Dispose of the canvas
-          if (canvas.current) {
-            canvas.current.dispose();
-            canvas.current = null;
-          }
-        };
-      }, [selectedLayout]);
-  
-    useEffect(() => {
-      updateBrush();
-    }, [brushSize, brushColor, isErasing]);
-  
-    useEffect(() => {
-      if (selectedLayout) {
-        drawLayout(selectedLayout);
-      }
-    }, [selectedLayout, borderColor, borderWidth]);
-  
-    const initializeBrush = () => {
-      if (canvas.current) {
-        canvas.current.isDrawingMode = false; // Disable drawing mode by default
-        canvas.current.freeDrawingBrush = new fabric.PencilBrush(canvas.current);
-        canvas.current.freeDrawingBrush.width = brushSize;
-        canvas.current.freeDrawingBrush.color = brushColor;
-        canvas.current.backgroundColor = 'white';
         canvas.current.renderAll();
       }
     };
-  
-    const updateBrush = () => {
-      if (canvas.current && canvas.current.freeDrawingBrush) {
-        canvas.current.freeDrawingBrush.width = brushSize;
-        canvas.current.freeDrawingBrush.color = isErasing ? 'white' : brushColor;
-        canvas.current.freeDrawingBrush.shadow = new fabric.Shadow({
-          blur: 0,
-          offsetX: 0,
-          offsetY: 0,
-          affectStroke: true,
-          color: brushColor,
-        });
-      }
-    };
-  
-    const drawLayout = (layout) => {
-      if (canvas.current) {
-        canvas.current.clear();
-        layout.panels.forEach(panel => {
-          const rect = new fabric.Rect({
-            left: (panel.x / 100) * canvas.current.width,
-            top: (panel.y / 100) * canvas.current.height,
-            width: (panel.width / 100) * canvas.current.width - borderWidth,
-            height: (panel.height / 100) * canvas.current.height - borderWidth,
-            fill: 'white',
-            stroke: borderColor,
-            strokeWidth: borderWidth,
-            selectable: false,
-          });
-          canvas.current.add(rect);
-        });
-        canvas.current.renderAll();
-      }
-    };
-  
-    const enableDrawingMode = () => {
-      if (canvas.current) {
-        canvas.current.isDrawingMode = true;
-      }
-      setIsErasing(false);
-      setIsTextMode(false);
-    };
-  
-    const enableErasingMode = () => {
-      if (canvas.current) {
-        canvas.current.isDrawingMode = true;
-      }
-      setIsErasing(true);
-      setIsTextMode(false);
-    };
-  
 
-  
-    const handleCanvasClick = (event) => {
-      if (isTextMode && canvas.current) {
-        const pointer = canvas.current.getPointer(event.e);
-        const text = new fabric.IText('Texte ici', {
-          left: pointer.x,
-          top: pointer.y,
-          fontFamily: selectedFont,
-          fontSize: 20,
-          fill: brushColor,
-        });
-        canvas.current.add(text);
-        canvas.current.setActiveObject(text);
-        canvas.current.renderAll();
-        setIsTextMode(false);
-      }
-    };
-  
-    const changeBrushColor = (event) => {
-      setBrushColor(event.target.value);
-    };
-  
-    const changeBrushSize = (event) => {
-      const newSize = parseInt(event.target.value, 10);
-      if (!isNaN(newSize)) {
-        setBrushSize(newSize);
-      }
-    };
-  
-    const changeBorderColor = (event) => {
-      setBorderColor(event.target.value);
-    };
-  
-    const changeBorderWidth = (event) => {
-      const newSize = parseInt(event.target.value, 10);
-      if (!isNaN(newSize)) {
-        setBorderWidth(newSize);
-      }
-    };
-  
+    // Initial resize
+    resizeCanvas();
 
-  
-    const saveDrawing = () => {
+    // Add resize event listener
+    window.addEventListener('resize', resizeCanvas);
+
+    // Add canvas click event listener
+    canvas.current.on('mouse:down', handleCanvasClick);
+
+    return () => {
+      // Cleanup resize event listener
+      window.removeEventListener('resize', resizeCanvas);
+
+      // Dispose of the canvas
       if (canvas.current) {
-        const dataUrl = canvas.current.toDataURL({
-          format: 'png',
-        });
-        onSave(dataUrl);
+        canvas.current.dispose();
+        canvas.current = null;
       }
     };
-  
-    const toggleMenu = () => {
-      setMenuOpen(!menuOpen);
-    };
-  
-    const toggleTextMenu = () => {
-      setTextMenuOpen(!textMenuOpen);
-    };
-  
-    const handleLayoutChange = (event) => {
-      const layoutName = event.target.value;
-      const layout = layouts.find(l => l.name === layoutName);
-      setSelectedLayout(layout);
-    };
-  
-    const addTextToCanvas = (font) => {
-      if (canvas.current) {
-        const text = new fabric.IText('Texte ici', {
-          left: 50,
-          top: 50,
-          fontFamily: font,
-          fontSize: 20,
-          fill: brushColor,
-        });
-        canvas.current.add(text);
-        canvas.current.setActiveObject(text);
-        canvas.current.renderAll();
-      }
-    };
-  
-    const changeTextColor = (event) => {
-      setBrushColor(event.target.value);
-    };
-  
-    return (
-      <>
-        <canvas ref={canvasRef}></canvas>
-        <button className="menu-toggle" onClick={toggleMenu}>
-          ☰
-        </button>
-        <div className={`menu ${menuOpen ? 'open' : ''}`}>
-          <div className="controls">
-            <label>
-              Couleur du pinceau :
-              <input type="color" value={brushColor} onChange={changeBrushColor} />
-            </label>
-            <label>
-              Taille du pinceau :
-              <input type="number" value={brushSize} onChange={changeBrushSize} min="1" max="50" />
-            </label>
-            <button onClick={enableDrawingMode}>Dessiner</button>
-            <button onClick={enableErasingMode}>Effacer</button>
-            <label>
-              Mise en page:
-              <select onChange={handleLayoutChange}>
-                <option value="">Sélectionner mise en page</option>
-                {layouts.map(layout => (
-                  <option key={layout.name} value={layout.name}>{layout.name}</option>
-                ))}
-              </select>
+  }, [selectedLayout]);
 
-            </label>
-            <label>
-              Couleur de bordure :
-              <input type="color" value={borderColor} onChange={changeBorderColor} />
-            </label>
-            <label>
-              Epaisseur bordure:
-              <input type="number" value={borderWidth} onChange={changeBorderWidth} min="1" max="20" />
-            </label>
-                        <button onClick={saveDrawing}>Sauvegarder page</button>
+  useEffect(() => {
+    updateBrush();
+  }, [brushSize, brushColor, isErasing]);
 
-          </div>
-        </div>
-        <button className="text-menu-toggle" onClick={toggleTextMenu}>
-          ☰
-        </button>
-        <div className={`text-menu ${textMenuOpen ? 'open' : ''}`}>
-          <div className="controls">
-            <label>
-              Couleur du texte :
-              <input type="color" value={brushColor} onChange={changeTextColor} />
-            </label>
-          </div>
-          <div className="font-examples">
-            {fontOptions.map((font, index) => (
-              <React.Fragment key={font.value}>
-                <div
-                  style={{ fontFamily: font.value, cursor: 'pointer', color: 'white', padding: '5px 0' }} // Padding for spacing
-                  onClick={() => {
-                    addTextToCanvas(font.value);
-                    setTextMenuOpen(false);
-                  }}
-                >
-                  <span>Police {index + 1}</span>
-                </div>
-                {index < fontOptions.length - 1 && <hr />}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </>
-    );
+  useEffect(() => {
+    if (selectedLayout) {
+      drawLayout(selectedLayout);
+    }
+  }, [selectedLayout, borderColor, borderWidth]);
+
+  const initializeBrush = () => {
+    if (canvas.current) {
+      canvas.current.isDrawingMode = false; // Disable drawing mode by default
+      canvas.current.freeDrawingBrush = new fabric.PencilBrush(canvas.current);
+      canvas.current.freeDrawingBrush.width = brushSize;
+      canvas.current.freeDrawingBrush.color = brushColor;
+      canvas.current.backgroundColor = 'white';
+      canvas.current.renderAll();
+    }
   };
-  
-  export default DrawingCanvas;
+
+  const updateBrush = () => {
+    if (canvas.current && canvas.current.freeDrawingBrush) {
+      canvas.current.freeDrawingBrush.width = brushSize;
+      canvas.current.freeDrawingBrush.color = isErasing ? 'white' : brushColor;
+      canvas.current.freeDrawingBrush.shadow = new fabric.Shadow({
+        blur: 0,
+        offsetX: 0,
+        offsetY: 0,
+        affectStroke: true,
+        color: brushColor,
+      });
+    }
+  };
+
+  const drawLayout = (layout) => {
+    if (canvas.current) {
+      canvas.current.clear();
+      layout.panels.forEach(panel => {
+        const rect = new fabric.Rect({
+          left: (panel.x / 100) * canvas.current.width,
+          top: (panel.y / 100) * canvas.current.height,
+          width: (panel.width / 100) * canvas.current.width - borderWidth,
+          height: (panel.height / 100) * canvas.current.height - borderWidth,
+          fill: 'white',
+          stroke: borderColor,
+          strokeWidth: borderWidth,
+          selectable: false,
+        });
+        canvas.current.add(rect);
+      });
+      canvas.current.renderAll();
+    }
+  };
+
+  const enableDrawingMode = () => {
+    if (canvas.current) {
+      canvas.current.isDrawingMode = true;
+    }
+    setIsErasing(false);
+    setIsTextMode(false);
+  };
+
+  const enableErasingMode = () => {
+    if (canvas.current) {
+      canvas.current.isDrawingMode = true;
+    }
+    setIsErasing(true);
+    setIsTextMode(false);
+  };
+
+  const handleCanvasClick = (event) => {
+    if (isTextMode && canvas.current) {
+      const pointer = canvas.current.getPointer(event.e);
+      const text = new fabric.IText('Texte ici', {
+        left: pointer.x,
+        top: pointer.y,
+        fontFamily: selectedFont,
+        fontSize: 20,
+        fill: textColor,
+      });
+      canvas.current.add(text);
+      canvas.current.setActiveObject(text);
+      canvas.current.renderAll();
+      setIsTextMode(false);
+      canvas.current.isDrawingMode = false; // Désactiver le mode dessin
+    }
+  };
+
+  const changeBrushColor = (event) => {
+    setBrushColor(event.target.value);
+  };
+
+  const changeBrushSize = (event) => {
+    const newSize = parseInt(event.target.value, 10);
+    if (!isNaN(newSize)) {
+      setBrushSize(newSize);
+    }
+  };
+
+  const changeBorderColor = (event) => {
+    setBorderColor(event.target.value);
+    const activeObject = canvas.current.getActiveObject();
+    if (activeObject && customBorders.includes(activeObject)) {
+      activeObject.set('stroke', event.target.value);
+      canvas.current.renderAll();
+    }
+  };
+
+  const changeBorderWidth = (event) => {
+    const newSize = parseInt(event.target.value, 10);
+    if (!isNaN(newSize)) {
+      setBorderWidth(newSize);
+      const activeObject = canvas.current.getActiveObject();
+      if (activeObject && customBorders.includes(activeObject)) {
+        activeObject.set('strokeWidth', newSize);
+        canvas.current.renderAll();
+      }
+    }
+  };
+
+  const saveDrawing = () => {
+    if (canvas.current) {
+      const dataUrl = canvas.current.toDataURL({
+        format: 'png',
+      });
+      console.log('saveDrawing in DrawingCanvas called with dataUrl:', dataUrl); // Ajoutez ce log
+
+      onSave(dataUrl);
+    }
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleTextMenu = () => {
+    setTextMenuOpen(!textMenuOpen);
+  };
+
+  const handleLayoutChange = (event) => {
+    const layoutName = event.target.value;
+    const layout = layouts.find(l => l.name === layoutName);
+    setSelectedLayout(layout);
+  };
+
+  const addTextToCanvas = (font) => {
+    if (canvas.current) {
+      const text = new fabric.IText('Texte ici', {
+        left: 50,
+        top: 50,
+        fontFamily: font,
+        fontSize: 20,
+        fill: textColor,
+      });
+      canvas.current.add(text);
+      canvas.current.setActiveObject(text);
+      canvas.current.renderAll();
+      canvas.current.isDrawingMode = false; // Désactiver le mode dessin
+    }
+  };
+
+  const changeTextColor = (event) => {
+    setTextColor(event.target.value);
+  };
+
+  const addCustomBorder = () => {
+    if (canvas.current) {
+      const line = new fabric.Line([50, 50, 200, 50], {
+        stroke: borderColor,
+        strokeWidth: borderWidth,
+        selectable: true,
+      });
+      canvas.current.add(line);
+      setCustomBorders([...customBorders, line]);
+      canvas.current.setActiveObject(line);
+      canvas.current.renderAll();
+    }
+  };
+
+  return (
+    <div> {/* Added this wrapper div */}
+      <canvas ref={canvasRef}></canvas>
+      <button className="menu-toggle" onClick={toggleMenu}>
+        ☰
+      </button>
+      <div className={`menu ${menuOpen ? 'open' : ''}`}>
+        <div className="controls">
+          <label>
+            Couleur du pinceau :
+            <input type="color" value={brushColor} onChange={changeBrushColor} />
+          </label>
+          <label>
+            Taille du pinceau :
+            <input type="number" value={brushSize} onChange={changeBrushSize} min="1" max="50" />
+          </label>
+          <button onClick={enableDrawingMode}>Dessiner</button>
+          <button onClick={enableErasingMode}>Effacer</button>
+          <label>
+            Mise en page:
+            <select onChange={handleLayoutChange}>
+              <option value="">Sélectionner mise en page</option>
+              {layouts.map(layout => (
+                <option key={layout.name} value={layout.name}>{layout.name}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Couleur de bordure :
+            <input type="color" value={borderColor} onChange={changeBorderColor} />
+          </label>
+          <label>
+            Epaisseur bordure:
+            <input type="number" value={borderWidth} onChange={changeBorderWidth} min="1" max="20" />
+          </label>
+          <button onClick={addCustomBorder}>Ajouter une bordure</button> {/* Bouton pour ajouter une bordure personnalisée */}
+          <button onClick={saveDrawing}>Sauvegarder page</button>
+        </div>
+      </div>
+      <button className="text-menu-toggle" onClick={toggleTextMenu}>
+        ☰
+      </button>
+      <div className={`text-menu ${textMenuOpen ? 'open' : ''}`}>
+        <div className="controls">
+          <label>
+            Couleur du texte :
+            <input type="color" value={textColor} onChange={changeTextColor} /> {/* Utiliser textColor ici */}
+          </label>
+        </div>
+        <div className="font-examples">
+          {fontOptions.map((font, index) => (
+            <div key={font.value}>
+              <div
+                style={{ fontFamily: font.value, cursor: 'pointer', color: 'white', padding: '5px 0' }} // Padding for spacing
+                onClick={() => {
+                  addTextToCanvas(font.value);
+                  setTextMenuOpen(false);
+                }}
+              >
+                <span>Police {index + 1}</span>
+              </div>
+              {index < fontOptions.length - 1 && <hr />}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div> 
+  );
+};
+
+export default DrawingCanvas;
