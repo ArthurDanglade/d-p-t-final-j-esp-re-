@@ -15,6 +15,8 @@ const CreateBD = () => {
     'Absurde', 'Guerre', 'Espace', 'Sport', 'Mythologies',
     'Bd courte', 'Bd longue', 'Amour'
   ]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // State for success modal
+
   // Fonction pour ajouter une page
   const handleAddPage = () => {
     setPages([...pages, { content: null, url: '' }]);
@@ -87,6 +89,12 @@ const CreateBD = () => {
       try {
         const data = await response.json();
         console.log(data);
+        setShowSuccessModal(true); // Show success modal
+        // Reset state
+        setPages([]);
+        setTitle('');
+        setDescription('');
+        setSelectedThemes([]);
       } catch (error) {
         console.error('Error parsing JSON:', error);
         const text = await response.text();
@@ -111,6 +119,21 @@ const CreateBD = () => {
   // Fonction pour supprimer un thème sélectionné
   const handleRemoveTheme = (theme) => {
     setSelectedThemes(prevThemes => prevThemes.filter(t => t !== theme));
+  };
+
+  // Fonction pour vérifier la validité du token
+  const isTokenValid = () => {
+    if (!token) return false;
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      const isValid = decodedToken.exp > currentTime;
+      console.log('Token valid:', isValid); // Log the validity of the token
+      return isValid;
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return false;
+    }
   };
 
   return (
@@ -160,6 +183,21 @@ const CreateBD = () => {
       <button onClick={handlePublish}>Publier la BD</button>
 
       <BottomNavigation />
+
+      {showSuccessModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Publication réussie !</h2>
+            <button onClick={() => {
+              if (isTokenValid()) {
+                navigate('/HomePage');
+              } else {
+                navigate('/login');
+              }
+            }}>OK</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

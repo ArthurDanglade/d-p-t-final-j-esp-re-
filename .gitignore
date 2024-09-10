@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignorer uploads sinon erreur ordinateur travail et perso
+/server/uploads/

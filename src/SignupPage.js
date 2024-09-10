@@ -38,7 +38,6 @@ const SignupPage = () => {
     <div className="signup-page-container">
       <h1>Inscription</h1>
       <div className="signup-form-container">
-        <h2>Inscription</h2>
         <form onSubmit={handleSubmit} className="signup-form">
           <div>
             <label htmlFor="nom">Nom</label>
